@@ -29,11 +29,11 @@ export default function AutocompleField({
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        id="controllable-states-demo"
+        id="autocomplete"
         options={options}
         renderInput={(params) => <TextField {...params} label={label} />}
       />
-      {helpertext ? <FormHelperText>{helpertext}</FormHelperText>: false}
+      {helpertext ? <FormHelperText>{helpertext}</FormHelperText> : false}
     </FormControl>
   );
 }

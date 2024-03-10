@@ -11,8 +11,6 @@ import {
   MenuItem,
   ListItemIcon,
   Divider,
-  Badge,
-  SvgIcon,
 } from "@mui/material";
 import { ReactElement, useEffect, useState } from "react";
 import { Logo } from "../icons/Logo";

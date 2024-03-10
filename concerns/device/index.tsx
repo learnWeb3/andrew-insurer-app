@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Alert, Grid, Typography } from "@mui/material";
 import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
 import { DeviceStatus } from "../../lib/device-status.enum";
@@ -9,6 +9,7 @@ import { Device } from "../../lib/device.interface";
 import { useOidcAccessToken } from "@axa-fr/react-oidc";
 import { findDevice } from "../../services/andrew-api.service";
 import { VehicleInformations } from "../../components/VehicleInformations";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
 export interface DeviceConcernProps {
   id: string | null;
@@ -63,15 +64,41 @@ export function DeviceConcern({ id = null }: DeviceConcernProps) {
           activeItemId={(device?.status as DeviceStatus) || null}
         />
       </Grid>
-      <Grid item xs={12}>
-        <DeviceStatistics />
-      </Grid>
+      {device?.status === DeviceStatus.PAIRED && device?.vehicle?.vin ? (
+        <Grid item xs={12}>
+          <DeviceStatistics
+            vehiclesVIN={[device.vehicle.vin]}
+            from={Date.now() - 365 * 2 * 24 * 60 * 60 * 1000}
+          />
+        </Grid>
+      ) : (
+        false
+      )}
+
+      {device?.status === DeviceStatus.INACTIVE ||
+      device?.status === DeviceStatus.DISABLED ? (
+        <Grid item xs={12}>
+          <Alert
+            icon={<ErrorOutlineOutlinedIcon fontSize="inherit" />}
+            severity="warning"
+          >
+            This device does not have a PAIRED status, please pair it to a
+            vehicle or re-enable it.
+          </Alert>
+        </Grid>
+      ) : (
+        false
+      )}
       <Grid item xs={12}>
         <DeviceDetail device={device} />
       </Grid>
       <Grid item xs={12}>
-        {device ? (
-          <VehicleInformations readOnly={true} vehicle={device.vehicle} />
+        {device?.status === DeviceStatus.PAIRED ? (
+          <VehicleInformations
+            readOnly={true}
+            vehicle={device.vehicle}
+            label="Paired vehicle"
+          />
         ) : (
           false
         )}

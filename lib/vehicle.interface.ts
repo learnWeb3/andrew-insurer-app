@@ -1,3 +1,5 @@
+import { Device } from "./device.interface";
+
 export interface Vehicle {
   _id: string;
   contract: string;
@@ -11,4 +13,5 @@ export interface Vehicle {
   contractSubscriptionKm: number;
   createdAt: string;
   updatedAt: string;
+  devices?: Device[];
 }

@@ -751,3 +751,24 @@ export async function listUserNotifications(
     )
     .then((response) => response.data);
 }
+
+export async function linkDeviceToVehicle(
+  accessToken: string,
+  deviceId: string,
+  data?: {
+    vehicle: string;
+    customer: string;
+    contract: string;
+  }
+) {
+  const endpoint = `/device/${deviceId}`;
+  const headers = {
+    ...getAuthorizationHeaders(accessToken),
+  };
+
+  return await andrewApi
+    .patch<any, AxiosResponse<any>>(endpoint, data, {
+      headers,
+    })
+    .then(({ data }) => data);
+}

@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { DateField } from "./DateField";
 import { TextField } from "./TextField";
 import {
@@ -9,6 +9,14 @@ import { FileType } from "../lib/file-type.enum";
 import { ObjectStorageFileField } from "./ObjectStorageFileField";
 import { useEffect, useState } from "react";
 import { Dayjs } from "dayjs";
+import { Device } from "../lib/device.interface";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { ModalWrapper } from "./ModalWrapper";
+import { LinkDeviceToVehicleModalContent } from "./LinkDeviceToVehicleModalContent";
+import { useToggledState } from "../hooks/useToggledState";
+import { useAppSelector } from "../store/hooks";
+import { selectAuthenticatedUserId } from "../store/reducers/authenticated-user.reducer";
+import { useRouter } from "next/router";
 
 export interface VehicleInformationsProps {
   label?: string;
@@ -22,6 +30,10 @@ export interface VehicleInformationsProps {
     contractSubscriptionKm?: number;
     driverLicenceDocURL?: string;
     vehicleRegistrationCardDocURL?: string;
+    devices?: Device[];
+    _id?: string;
+    customer?: string;
+    contract?: string;
   };
   setVehicle?: (vehicle: {
     vin?: string;
@@ -89,15 +101,25 @@ export function VehicleInformations({
       });
   }, [errors]);
 
+  const {
+    toggled: linkToVehicleToggled,
+    open: linkToVehicleOpen,
+    close: linkToVehicleClose,
+  } = useToggledState(false);
+
+  const router = useRouter();
+
   return (
     <Grid container item xs={12} spacing={4} mb={2} alignItems="flex-start">
       {label ? (
         <Grid item xs={12}>
-          <Typography gutterBottom variant="subtitle2">
+          <Typography gutterBottom variant="h6">
             {label}
           </Typography>
         </Grid>
-      ): false}
+      ) : (
+        false
+      )}
       <Grid container item xs={12} lg={6} spacing={4} alignItems="flex-start">
         <Grid item xs={12}>
           <TextField
@@ -235,7 +257,6 @@ export function VehicleInformations({
             fileNameOverride={"vehicle-registration-card"}
             readOnly={readOnly}
           />
-
           <ObjectStorageFileField
             label="driver license"
             filePath={vehicle?.driverLicenceDocURL || ""}
@@ -244,8 +265,54 @@ export function VehicleInformations({
             fileNameOverride={"driver-licence"}
             readOnly={readOnly}
           />
+
+          {!vehicle?.devices?.length ? (
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              gap={2}
+              width={"100%"}
+              mt={2}
+              pt={4}
+              mb={2}
+              pb={4}
+              sx={{
+                borderTop: "1px solid",
+                borderBottom: "1px solid",
+              }}
+            >
+              <Typography variant="body1">
+                No device attached to the vehicle :
+              </Typography>
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={linkToVehicleOpen}
+                size="large"
+                startIcon={<SettingsOutlinedIcon />}
+              >
+                Link a device
+              </Button>
+            </Box>
+          ) : (
+            false
+          )}
         </Grid>
       </Grid>
+
+      <ModalWrapper
+        toggled={linkToVehicleToggled}
+        close={linkToVehicleClose}
+        content={
+          <LinkDeviceToVehicleModalContent
+            vehicleId={vehicle?._id || null}
+            contractId={vehicle?.contract || null}
+            customerId={vehicle?.customer || null}
+            close={linkToVehicleClose}
+            refresh={async () => router.reload()}
+          />
+        }
+      />
     </Grid>
   );
 }

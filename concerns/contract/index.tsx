@@ -133,6 +133,16 @@ export function ContractConcern({ id = null }: ContractsConcernProps) {
         <ContractDetail contract={contract} readOnly={true} />
       </Grid>
       <Grid item xs={12}>
+        {vehicles ? (
+          <ContractStatistics
+            vehiclesVIN={vehicles.results.map((vehicle) => vehicle.vin)}
+            from={Date.now() - 365 * 2 * 24 * 60 * 60 * 1000}
+          />
+        ) : (
+          false
+        )}
+      </Grid>
+      <Grid item xs={12}>
         <UserDetail user={contract?.customer || null} />
       </Grid>
       <Grid item xs={12}>

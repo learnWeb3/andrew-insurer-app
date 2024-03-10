@@ -2,6 +2,10 @@
 
 This repository contains the code related to the Andrew Insurance insurer and superadmin front facing application.
 
+## Online solution
+
+[Andrew insurer deployed application](https://andrew.insurer.students-epitech.ovh)
+
 ## APIs documentation
 
 - [API postman collection online](https://documenter.getpostman.com/view/13953520/2s9YeHbrPg#intro)
@@ -71,6 +75,14 @@ III. An insurer review the subscription application and can directly update the 
 - jacko@yopmail.com - insurer aka supervisor (keycloak)
 - jack.williams@yopmail.com - user
 - mike@yopmail.com - user
+
+
+## Build docker image 
+
+```bash
+# build the image 
+docker build -t <repository>/andrew-insurer:<DD>-<MM>-<YYYY>.<UNIQUE ID> .
+```
 
 
 ## Quick start
