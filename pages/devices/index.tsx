@@ -6,9 +6,26 @@ import { SetAuthenticatedUser } from "../../concerns/authenticated-user/SetAuthe
 import { AvailableRoles } from "../../lib/available-roles.enum";
 import { useRouter } from "next/router";
 import { DeviceStatus } from "../../lib/device-status.enum";
+import { useEffect, useState } from "react";
 
 export default function Devices() {
   const router = useRouter();
+  const searchFiltersInitialStatusQueryParamKey = "status";
+  const [searchFilters, setSearchFilters] = useState<{
+    status: DeviceStatus;
+  }>({
+    status: DeviceStatus.PAIRED,
+  });
+
+  useEffect(() => {
+    if (router?.query?.[searchFiltersInitialStatusQueryParamKey]) {
+      setSearchFilters({
+        status: router?.query?.[
+          searchFiltersInitialStatusQueryParamKey
+        ] as DeviceStatus,
+      });
+    }
+  }, [router]);
   return (
     <OidcSecure>
       <OidcRoleGuard
@@ -17,9 +34,8 @@ export default function Devices() {
         <SetAuthenticatedUser>
           <Container>
             <DevicesConcern
-              initialSearchFiltersStatus={
-                (router?.query?.status as DeviceStatus) || DeviceStatus.PAIRED
-              }
+              searchFilters={searchFilters}
+              setSearchFilters={setSearchFilters}
             />
           </Container>
         </SetAuthenticatedUser>

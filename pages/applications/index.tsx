@@ -6,9 +6,26 @@ import { OidcSecure } from "@axa-fr/react-oidc";
 import { SetAuthenticatedUser } from "../../concerns/authenticated-user/SetAuthenticatedUser";
 import { OidcRoleGuard } from "../../components/OidcRoleGuard";
 import { AvailableRoles } from "../../lib/available-roles.enum";
+import { useEffect, useState } from "react";
 
 export default function Applications() {
   const router = useRouter();
+  const searchFiltersInitialStatusQueryParamKey = "status";
+  const [searchFilters, setSearchFilters] = useState<{
+    status: ApplicationStatus;
+  }>({
+    status: ApplicationStatus.PENDING,
+  });
+
+  useEffect(() => {
+    if (router?.query?.[searchFiltersInitialStatusQueryParamKey]) {
+      setSearchFilters({
+        status: router?.query?.[
+          searchFiltersInitialStatusQueryParamKey
+        ] as ApplicationStatus,
+      });
+    }
+  }, [router]);
   return (
     <OidcSecure>
       <OidcRoleGuard
@@ -17,10 +34,8 @@ export default function Applications() {
         <SetAuthenticatedUser>
           <Container>
             <ApplicationsConcern
-              initialSearchFiltersStatus={
-                (router?.query?.status as ApplicationStatus) ||
-                ApplicationStatus.PENDING
-              }
+              searchFilters={searchFilters}
+              setSearchFilters={setSearchFilters}
             />
           </Container>
         </SetAuthenticatedUser>

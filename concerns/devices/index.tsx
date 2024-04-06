@@ -24,11 +24,15 @@ import { DeviceStatusFilters } from "./DeviceStatusFilters";
 import { useRouter } from "next/router";
 
 export interface DevicesConcernProps {
-  initialSearchFiltersStatus?: DeviceStatus;
+  searchFilters: {
+    status: DeviceStatus;
+  };
+  setSearchFilters: (searchFilters: { status: DeviceStatus }) => void;
 }
 
 export function DevicesConcern({
-  initialSearchFiltersStatus = DeviceStatus.PAIRED,
+  searchFilters = { status: DeviceStatus.PAIRED },
+  setSearchFilters = (newFilters) => {},
 }: DevicesConcernProps) {
   const columns: GridColDef[] = [
     {
@@ -62,12 +66,6 @@ export function DevicesConcern({
   const router = useRouter();
 
   const { toggled, open, close } = useToggledState(false);
-
-  const [searchFilters, setSearchFilters] = useState<{
-    status: DeviceStatus;
-  }>({
-    status: initialSearchFiltersStatus,
-  });
 
   const { accessToken } = useOidcAccessToken();
 
@@ -175,12 +173,12 @@ export function DevicesConcern({
         />
         <DeviceStatusFilters
           selectedDeviceStatus={searchFilters.status}
-          setSelectedDeviceStatus={(status) =>
-            setSearchFilters({
-              ...searchFilters,
-              status,
-            })
-          }
+          setSelectedDeviceStatus={(status) => {
+            const searchFiltersInitialStatusQueryParamKey = "status";
+            router.push(
+              `/devices?${searchFiltersInitialStatusQueryParamKey}=${status}`
+            );
+          }}
         />
       </Grid>
       <Grid item xs={12}>

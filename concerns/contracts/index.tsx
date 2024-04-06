@@ -14,8 +14,20 @@ import { Contract } from "../../lib/contract.interface";
 import { ContractStatusFilters } from "./ContractStatusFilters";
 import { usePagination } from "../../hooks/usePagination";
 import { useDebounce } from "../../hooks/useDebounce";
+import { useRouter } from "next/router";
 
-export function ContractsConcern() {
+export interface ContractsConcernProps {
+  searchFilters: {
+    status: ContractStatus;
+  };
+  setSearchFilters: (searchFilters: { status: ContractStatus }) => void;
+}
+
+export function ContractsConcern({
+  searchFilters = { status: ContractStatus.ACTIVE },
+  setSearchFilters = (newFilters) => {},
+}: ContractsConcernProps) {
+  const router = useRouter();
   const columns: GridColDef[] = [
     {
       field: "ref",
@@ -47,13 +59,6 @@ export function ContractsConcern() {
 
   const [searchValue, setSearchValue] = useState<string>("");
   const debouncedSearchValue = useDebounce(searchValue, 400);
-
-  const [searchFilters, setSearchFilters] = useState<{
-    status: ContractStatus;
-  }>({
-    status: ContractStatus.ACTIVE,
-  });
-
   const { accessToken } = useOidcAccessToken();
 
   const [contracts, setContracts] = useState<
@@ -127,12 +132,12 @@ export function ContractsConcern() {
         />
         <ContractStatusFilters
           selectedContractStatus={searchFilters.status}
-          setSelectedContractStatus={(status) =>
-            setSearchFilters({
-              ...searchFilters,
-              status,
-            })
-          }
+          setSelectedContractStatus={(status) => {
+            const searchFiltersInitialStatusQueryParamKey = "status";
+            router.push(
+              `/contracts?${searchFiltersInitialStatusQueryParamKey}=${status}`
+            );
+          }}
         />
       </Grid>
       <Grid item xs={12}>

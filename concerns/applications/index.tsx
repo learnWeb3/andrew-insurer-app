@@ -1,12 +1,10 @@
-import { Box, Button, Grid, Hidden, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DataTable from "../../components/Datatable";
-import ArrowRightAltOutlinedIcon from "@mui/icons-material/ArrowRightAltOutlined";
 import { SearchBar } from "../../components/SearchBar";
 import { RenderCellLink } from "../../components/Datatable/RenderCellLink";
 import { RenderCellApplicationSatus } from "../../components/Datatable/RenderCellStatus";
 import { RenderCellDate } from "../../components/Datatable/RenderCellDate";
-import { NewButton } from "../../components/NewButton";
 import { ApplicationStatus } from "../../lib/application-status.enum";
 import { useEffect, useState } from "react";
 import {
@@ -22,11 +20,15 @@ import { usePagination } from "../../hooks/usePagination";
 import { useDebounce } from "../../hooks/useDebounce";
 
 export interface ApplicationsConcernProps {
-  initialSearchFiltersStatus?: ApplicationStatus;
+  searchFilters: {
+    status: ApplicationStatus;
+  };
+  setSearchFilters: (searchFilters: { status: ApplicationStatus }) => void;
 }
 
 export function ApplicationsConcern({
-  initialSearchFiltersStatus = ApplicationStatus.PENDING,
+  searchFilters = { status: ApplicationStatus.PENDING },
+  setSearchFilters = (newFilters) => {},
 }: ApplicationsConcernProps) {
   const columns: GridColDef[] = [
     {
@@ -88,12 +90,6 @@ export function ApplicationsConcern({
 
   const [searchValue, setSearchValue] = useState<string>("");
   const debouncedSearchValue = useDebounce(searchValue, 400);
-
-  const [searchFilters, setSearchFilters] = useState<{
-    status: ApplicationStatus;
-  }>({
-    status: initialSearchFiltersStatus,
-  });
 
   useEffect(() => {
     if (accessToken) {
@@ -160,12 +156,12 @@ export function ApplicationsConcern({
           />
           <ApplicationStatusFilters
             selectedApplicationStatus={searchFilters.status}
-            setSelectedApplicationStatus={(status) =>
-              setSearchFilters({
-                ...searchFilters,
-                status,
-              })
-            }
+            setSelectedApplicationStatus={(status) => {
+              const searchFiltersInitialStatusQueryParamKey = "status";
+              router.push(
+                `/applications?${searchFiltersInitialStatusQueryParamKey}=${status}`
+              );
+            }}
           />
         </Box>
       </Grid>

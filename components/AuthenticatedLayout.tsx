@@ -20,8 +20,6 @@ export const configuration = {
   client_id: process.env.NEXT_PUBLIC_OIDC_CLIENT_ID as string,
   redirect_uri:
     process.env.NEXT_PUBLIC_FRONTEND_URL + "/#authentication/callback",
-  silent_redirect_uri:
-    process.env.NEXT_PUBLIC_FRONTEND_URL + "/#authentication/silent-callback", // Optional activate silent-signin that use cookies between OIDC server and client javascript to restore the session
   scope: process.env.NEXT_PUBLIC_OIDC_SCOPES as string,
   authority: process.env.NEXT_PUBLIC_OIDC_AUTHORITY as string,
 };
