@@ -13,9 +13,7 @@ export default function Contracts() {
   const router = useRouter();
   const [searchFilters, setSearchFilters] = useState<{
     status: ContractStatus;
-  }>({
-    status: ContractStatus.ACTIVE,
-  });
+  } | null>(null);
 
   useEffect(() => {
     if (router?.query?.[searchFiltersInitialStatusQueryParamKey]) {
@@ -23,6 +21,10 @@ export default function Contracts() {
         status: router?.query?.[
           searchFiltersInitialStatusQueryParamKey
         ] as ContractStatus,
+      });
+    } else {
+      setSearchFilters({
+        status: ContractStatus.ACTIVE,
       });
     }
   }, [router]);
@@ -34,10 +36,14 @@ export default function Contracts() {
       >
         <SetAuthenticatedUser>
           <Container>
-            <ContractsConcern
-              setSearchFilters={setSearchFilters}
-              searchFilters={searchFilters}
-            />
+            {searchFilters ? (
+              <ContractsConcern
+                setSearchFilters={setSearchFilters}
+                searchFilters={searchFilters}
+              />
+            ) : (
+              false
+            )}
           </Container>
         </SetAuthenticatedUser>
       </OidcRoleGuard>

@@ -13,9 +13,7 @@ export default function Applications() {
   const searchFiltersInitialStatusQueryParamKey = "status";
   const [searchFilters, setSearchFilters] = useState<{
     status: ApplicationStatus;
-  }>({
-    status: ApplicationStatus.PENDING,
-  });
+  } | null>(null);
 
   useEffect(() => {
     if (router?.query?.[searchFiltersInitialStatusQueryParamKey]) {
@@ -23,6 +21,10 @@ export default function Applications() {
         status: router?.query?.[
           searchFiltersInitialStatusQueryParamKey
         ] as ApplicationStatus,
+      });
+    } else {
+      setSearchFilters({
+        status: ApplicationStatus.PENDING,
       });
     }
   }, [router]);
@@ -33,10 +35,14 @@ export default function Applications() {
       >
         <SetAuthenticatedUser>
           <Container>
-            <ApplicationsConcern
-              searchFilters={searchFilters}
-              setSearchFilters={setSearchFilters}
-            />
+            {searchFilters ? (
+              <ApplicationsConcern
+                searchFilters={searchFilters}
+                setSearchFilters={setSearchFilters}
+              />
+            ) : (
+              false
+            )}
           </Container>
         </SetAuthenticatedUser>
       </OidcRoleGuard>

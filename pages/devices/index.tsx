@@ -13,9 +13,7 @@ export default function Devices() {
   const searchFiltersInitialStatusQueryParamKey = "status";
   const [searchFilters, setSearchFilters] = useState<{
     status: DeviceStatus;
-  }>({
-    status: DeviceStatus.PAIRED,
-  });
+  } | null>(null);
 
   useEffect(() => {
     if (router?.query?.[searchFiltersInitialStatusQueryParamKey]) {
@@ -23,6 +21,10 @@ export default function Devices() {
         status: router?.query?.[
           searchFiltersInitialStatusQueryParamKey
         ] as DeviceStatus,
+      });
+    } else {
+      setSearchFilters({
+        status: DeviceStatus.PAIRED,
       });
     }
   }, [router]);
@@ -33,10 +35,14 @@ export default function Devices() {
       >
         <SetAuthenticatedUser>
           <Container>
-            <DevicesConcern
-              searchFilters={searchFilters}
-              setSearchFilters={setSearchFilters}
-            />
+            {searchFilters ? (
+              <DevicesConcern
+                searchFilters={searchFilters}
+                setSearchFilters={setSearchFilters}
+              />
+            ) : (
+              false
+            )}
           </Container>
         </SetAuthenticatedUser>
       </OidcRoleGuard>
