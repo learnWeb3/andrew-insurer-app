@@ -17,6 +17,7 @@ import { useToggledState } from "../hooks/useToggledState";
 import { useAppSelector } from "../store/hooks";
 import { selectAuthenticatedUserId } from "../store/reducers/authenticated-user.reducer";
 import { useRouter } from "next/router";
+import { useVINDecoder } from "../hooks/useVINDecoder";
 
 export interface VehicleInformationsProps {
   label?: string;
@@ -108,6 +109,19 @@ export function VehicleInformations({
   } = useToggledState(false);
 
   const router = useRouter();
+
+  const decodedVIN = useVINDecoder(vehicle.vin || "");
+
+  useEffect(() => {
+    if (decodedVIN?.ErrorCode === "0") {
+      setVehicle({
+        ...vehicle,
+        brand: decodedVIN.Make,
+        model: decodedVIN.Model,
+        originalInServiceDate: new Date(+decodedVIN.ModelYear, 0).toISOString(),
+      });
+    }
+  }, [decodedVIN]);
 
   return (
     <Grid container item xs={12} spacing={4} mb={2} alignItems="flex-start">
