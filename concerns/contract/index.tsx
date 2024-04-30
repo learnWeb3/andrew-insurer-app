@@ -27,6 +27,7 @@ import { PaginatedResults } from "../../lib/paginated-results.interface";
 import { DeviceStatus } from "../../lib/device-status.enum";
 import { Device } from "../../lib/device.interface";
 import { Vehicle } from "../../lib/vehicle.interface";
+import { MetricsReportsDetail } from "./MetricsReportsDetail";
 
 export interface ContractsConcernProps {
   id: string | null;
@@ -133,7 +134,7 @@ export function ContractConcern({ id = null }: ContractsConcernProps) {
         <ContractDetail contract={contract} readOnly={true} />
       </Grid>
       <Grid item xs={12}>
-        {vehicles ? (
+        {vehicles?.results ? (
           <ContractStatistics
             vehiclesVIN={vehicles.results.map((vehicle) => vehicle.vin)}
             from={Date.now() - 365 * 2 * 24 * 60 * 60 * 1000}
@@ -151,6 +152,16 @@ export function ContractConcern({ id = null }: ContractsConcernProps) {
       <Grid item xs={12}>
         <DevicesDetail devices={devices} />
       </Grid>
+
+      {vehicles?.results ? (
+        <Grid item xs={12}>
+          <MetricsReportsDetail
+            vehiclesVIN={vehicles.results.map((vehicle) => vehicle.vin)}
+          />
+        </Grid>
+      ) : (
+        false
+      )}
     </Grid>
   );
 }
