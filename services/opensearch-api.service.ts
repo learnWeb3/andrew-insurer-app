@@ -243,6 +243,59 @@ export async function getVehiclesMetricsReports(
     });
 }
 
+export async function getVehiclesMetricsReportsCount(accessToken: string) {
+  const endpoint = `/acl_report/_search`;
+  const headers = {
+    ...getAuthorizationHeaders(accessToken),
+  };
+
+  const query = {
+    size: 0,
+    query: {
+      bool: {
+        must: [
+          {
+            has_parent: {
+              parent_type: "vehicle",
+              query: {
+                match_all: {},
+              },
+            },
+          },
+        ],
+      },
+    },
+  };
+
+  return opensearchApi
+    .post<
+      any,
+      AxiosResponse<{
+        took: number;
+        timed_out: boolean;
+        _shards: {
+          total: number;
+          successful: number;
+          skipped: number;
+          failed: number;
+        };
+        hits: {
+          total: {
+            value: number;
+            relation: string;
+          };
+          max_score: null;
+        };
+      }>
+    >(endpoint, query, {
+      headers,
+    })
+    .then((response) => {
+      const count = response.data.hits.total.value;
+      return count;
+    });
+}
+
 export async function getVehiclesAverageBehaviourClassIntHistogram(
   accessToken: string,
   vehcilesVIN: string[] = [],

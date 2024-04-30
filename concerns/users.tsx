@@ -108,9 +108,9 @@ export function UsersConcern() {
   }, [accessToken, pagination, debouncedSearchValue]);
 
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={2}>
       <Grid item xs={6}>
-        <Typography variant="h4" component="h2" gutterBottom>
+        <Typography variant="h6" component="h2" gutterBottom>
           Users
         </Typography>
       </Grid>

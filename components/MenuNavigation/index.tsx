@@ -7,8 +7,10 @@ import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
 import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import { Logo } from "../../icons/Logo";
 import { MenuItemIcon } from "./MenuItemIcon";
+import { useRouter } from "next/router";
 
 export interface MenuNavigationProps {
   width?: string | number;
@@ -19,6 +21,7 @@ export default function MenuNavigation({
   width = "25%",
   onMenuItemClick = () => {},
 }: MenuNavigationProps) {
+  const router = useRouter();
   return (
     <Paper
       sx={{
@@ -32,7 +35,7 @@ export default function MenuNavigation({
       }}
     >
       <MenuList>
-        <MenuItem>
+        <MenuItem onClick={() => router.push("/")}>
           <ListItemIcon>
             <Logo height="2.5rem" />
           </ListItemIcon>
@@ -55,7 +58,7 @@ export default function MenuNavigation({
 
         <MenuItemIcon
           label="Applications"
-          icon={<PeopleOutlineOutlinedIcon color="inherit" />}
+          icon={<FolderOutlinedIcon color="inherit" />}
           path="/applications"
           onMenuItemClick={onMenuItemClick}
         />

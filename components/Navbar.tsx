@@ -114,7 +114,7 @@ export default function Navbar({}: NavbarProps) {
               </IconButton>
             </Hidden>
 
-            <Hidden lgDown>
+            {/* <Hidden lgDown>
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
@@ -124,7 +124,7 @@ export default function Navbar({}: NavbarProps) {
                   inputProps={{ "aria-label": "search" }}
                 />
               </Search>
-            </Hidden>
+            </Hidden> */}
 
             <Box sx={{ display: "flex", gap: 1 }}>
               <NotificationBadge onClick={notificationOpen} />

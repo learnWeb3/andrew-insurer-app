@@ -133,9 +133,9 @@ export function DevicesConcern({
     }
   }, [accessToken, pagination, debouncedSearchValue, searchFilters]);
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={2}>
       <Grid item xs={6}>
-        <Typography variant="h4" component="h2" gutterBottom>
+        <Typography variant="h6" component="h2" gutterBottom>
           Devices
         </Typography>
       </Grid>
@@ -171,6 +171,8 @@ export function DevicesConcern({
           value={searchValue}
           setValue={setSearchValue}
         />
+      </Grid>
+      <Grid item xs={12}>
         <DeviceStatusFilters
           selectedDeviceStatus={searchFilters.status}
           setSelectedDeviceStatus={(status) => {

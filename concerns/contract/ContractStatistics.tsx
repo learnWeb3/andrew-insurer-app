@@ -49,7 +49,7 @@ export function PeriodicitySelection({
           label={item.label}
           variant={activeItemValue === item.value ? "filled" : "outlined"}
           onClick={() => setActiveItemId(item.value)}
-          color="primary"
+          sx={{ color: "primary.light" }}
         />
       ))}
     </Box>
@@ -173,13 +173,27 @@ export function ContractStatistics({
                             dataLabels: {
                               name: {
                                 fontSize: "16px",
-                                color: "#04103B",
+                                color:
+                                  gaugeData > 20 && gaugeData < 40
+                                    ? "##ff9800"
+                                    : gaugeData >= 40 && gaugeData < 50
+                                    ? "#085FCE"
+                                    : gaugeData >= 50
+                                    ? "#085FCE"
+                                    : "#ef5350",
                                 offsetY: 120,
                               },
                               value: {
                                 offsetY: 76,
                                 fontSize: "22px",
-                                color: undefined,
+                                color:
+                                  gaugeData > 20 && gaugeData < 40
+                                    ? "##ff9800"
+                                    : gaugeData >= 40 && gaugeData < 50
+                                    ? "#085FCE"
+                                    : gaugeData >= 50
+                                    ? "#085FCE"
+                                    : "#ef5350",
                                 formatter: function (val) {
                                   return val + "%";
                                 },
@@ -192,9 +206,9 @@ export function ContractStatistics({
                             gaugeData > 20 && gaugeData < 40
                               ? ["##ff9800"]
                               : gaugeData >= 40 && gaugeData < 50
-                              ? ["#04103B"]
+                              ? ["#085FCE"]
                               : gaugeData >= 50
-                              ? ["#4caf50"]
+                              ? ["#085FCE"]
                               : ["#ef5350"],
                           type: "gradient",
                           gradient: {

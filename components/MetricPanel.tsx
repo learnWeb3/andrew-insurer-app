@@ -14,11 +14,11 @@ export function MetricPanel({
       }}
     />
   ),
-  href = "/",
+  href = "",
 }) {
   return (
     <Paper sx={{ p: 4 }}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignItems="flex-start">
         <Grid
           item
           xs={12}
@@ -32,11 +32,15 @@ export function MetricPanel({
           }}
         >
           <Hidden lgDown>
-            <Typography variant="subtitle1" component="p">
+            <Typography
+              variant="subtitle1"
+              component="p"
+              sx={{ color: "orange.main" }}
+            >
               {label}
             </Typography>
           </Hidden>
-          <Typography variant="h4" component="p">
+          <Typography variant="h4" component="p" sx={{ color: "orange.main" }}>
             {value}
           </Typography>
         </Grid>
@@ -50,14 +54,23 @@ export function MetricPanel({
             alignItems: "center",
             flexDirection: "column",
             gap: 2,
+            color: "primary.light",
           }}
         >
           {icon}
-          <Link href={href}>
-            <Typography variant="body1" component="p">
-              see more
-            </Typography>
-          </Link>
+          {href ? (
+            <Link href={href}>
+              <Typography
+                variant="button"
+                component="p"
+                sx={{ color: "primary" }}
+              >
+                see more
+              </Typography>
+            </Link>
+          ) : (
+            false
+          )}
         </Grid>
       </Grid>
     </Paper>
