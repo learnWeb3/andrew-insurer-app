@@ -9,6 +9,7 @@ import { parseDateString } from "../../services/date-formatter.service";
 import { RenderCellDeviceSatus } from "../../components/Datatable/RenderCellStatus";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import { DeviceStatus } from "../../lib/device-status.enum";
+import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
 
 export interface DeviceCardProps {
   id: string;
@@ -34,8 +35,9 @@ export function DeviceCard({
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardHeader
+        avatar={<DevicesOutlinedIcon color="inherit" />}
         title={
-          <Typography variant="subtitle2" gutterBottom>
+          <Typography variant="subtitle2">
             {parseDateString(createdAt)}
           </Typography>
         }

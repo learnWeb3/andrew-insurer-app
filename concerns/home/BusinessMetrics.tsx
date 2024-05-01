@@ -20,6 +20,7 @@ import { ContractStatus } from "../../lib/contract-status.enum";
 import dynamic from "next/dynamic";
 import { getVehiclesMetricsReportsCount } from "../../services/opensearch-api.service";
 
+
 export const GaugeChart = dynamic(
   () =>
     import("../../components/ApexChart").then((module) => module.GaugeChart),

@@ -26,6 +26,7 @@ import { useRouter } from "next/router";
 import { usePagination } from "../../hooks/usePagination";
 import { useDebounce } from "../../hooks/useDebounce";
 import { ApplicationsCardsList } from "./ApplicationsCardsList";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 export interface ApplicationsConcernProps {
   searchFilters: {
@@ -147,8 +148,9 @@ export function ApplicationsConcern({
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h6" component="h2" gutterBottom>
+      <Grid item xs={12} display={"flex"} alignItems={"center"} gap={1}>
+        <FolderOutlinedIcon color="inherit" />
+        <Typography variant="h6" component="h2">
           Applications
         </Typography>
       </Grid>

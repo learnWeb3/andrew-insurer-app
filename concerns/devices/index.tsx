@@ -30,7 +30,7 @@ import { usePagination } from "../../hooks/usePagination";
 import { useDebounce } from "../../hooks/useDebounce";
 import { DeviceStatusFilters } from "./DeviceStatusFilters";
 import { useRouter } from "next/router";
-import { ContractsCardsList } from "../contracts/ContractsCardsList";
+import DevicesOutlinedIcon from "@mui/icons-material/DevicesOutlined";
 import { DevicesCardsList } from "./DevicesCardsList";
 
 export interface DevicesConcernProps {
@@ -46,7 +46,7 @@ export function DevicesConcern({
 }: DevicesConcernProps) {
   const columns: GridColDef[] = [
     {
-      field: "ref",
+      field: "reference",
       headerName: "Ref",
       flex: 1.5,
       renderCell: RenderCellLink,
@@ -147,18 +147,20 @@ export function DevicesConcern({
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <Typography variant="h6" component="h2" gutterBottom>
+      <Grid item xs={8} display={"flex"} alignItems={"center"} gap={1}>
+        <DevicesOutlinedIcon color="inherit" />
+        <Typography variant="h6" component="h2">
           Devices
         </Typography>
       </Grid>
+
       <OidcRoleGuard
         hasAccessRoles={[AvailableRoles.SUPERADMIN]}
         UnauthorizedComponent={() => null}
       >
         <Grid
           item
-          xs={6}
+          xs={4}
           sx={{
             display: "flex",
             justifyContent: "flex-end",

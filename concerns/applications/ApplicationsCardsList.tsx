@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Button, CardHeader, Paper } from "@mui/material";
 import { RenderCellApplicationSatus } from "../../components/Datatable/RenderCellStatus";
 import { parseDateString } from "../../services/date-formatter.service";
-import { UserAvatar } from "../../components/UserAvatar";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 
 export interface ApplicationCardProps {
@@ -36,7 +36,7 @@ export function ApplicationCard({
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardHeader
-        avatar={<UserAvatar fullName={user.label} />}
+        avatar={<FolderOutlinedIcon color="inherit" />}
         title={parseDateString(createdAt)}
         action={<RenderCellApplicationSatus value={status} />}
       />

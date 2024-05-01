@@ -25,6 +25,7 @@ import { PaginatedResults } from "../../lib/paginated-results.interface";
 import { usePagination } from "../../hooks/usePagination";
 import { useDebounce } from "../../hooks/useDebounce";
 import { UsersCardsList } from "./UserCardsList";
+import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
 
 export function UsersConcern() {
   const columns: GridColDef[] = [
@@ -120,14 +121,15 @@ export function UsersConcern() {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <Typography variant="h6" component="h2" gutterBottom>
+      <Grid item xs={8} display={"flex"} alignItems={"center"} gap={1}>
+        <PeopleOutlineOutlinedIcon color="inherit" />
+        <Typography variant="h6" component="h2">
           Users
         </Typography>
       </Grid>
       <Grid
         item
-        xs={6}
+        xs={4}
         sx={{
           display: "flex",
           justifyContent: "flex-end",

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Button, CardHeader, Paper } from "@mui/material";
 import { parseDateString } from "../../services/date-formatter.service";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
+import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
 
 export interface UserCardProps {
   id: string;
@@ -32,8 +33,9 @@ export function UserCard({
   return (
     <Card sx={{ minWidth: 275 }}>
       <CardHeader
+        avatar={<PeopleOutlineOutlinedIcon color="inherit" />}
         title={
-          <Typography variant="subtitle2" gutterBottom>
+          <Typography variant="subtitle2">
             {parseDateString(createdAt)}
           </Typography>
         }
