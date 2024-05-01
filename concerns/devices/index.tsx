@@ -1,4 +1,12 @@
-import { Button, Grid, Hidden, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  Hidden,
+  Pagination,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DataTable from "../../components/Datatable";
 import ArrowRightAltOutlinedIcon from "@mui/icons-material/ArrowRightAltOutlined";
@@ -22,6 +30,8 @@ import { usePagination } from "../../hooks/usePagination";
 import { useDebounce } from "../../hooks/useDebounce";
 import { DeviceStatusFilters } from "./DeviceStatusFilters";
 import { useRouter } from "next/router";
+import { ContractsCardsList } from "../contracts/ContractsCardsList";
+import { DevicesCardsList } from "./DevicesCardsList";
 
 export interface DevicesConcernProps {
   searchFilters: {
@@ -75,7 +85,7 @@ export function DevicesConcern({
   const [devices, setDevices] = useState<
     PaginatedResults<{
       id: string;
-      ref: {
+      reference: {
         label: string;
         href: string;
       };
@@ -112,7 +122,7 @@ export function DevicesConcern({
           ...data,
           results: data.results.map((device: Device) => ({
             id: device._id,
-            ref: {
+            reference: {
               label: device.serialNumber,
               href: `/devices/${device._id}`,
             },
@@ -132,6 +142,9 @@ export function DevicesConcern({
       });
     }
   }, [accessToken, pagination, debouncedSearchValue, searchFilters]);
+
+  const matches = useMediaQuery("(min-width:600px)");
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={6}>
@@ -184,17 +197,39 @@ export function DevicesConcern({
         />
       </Grid>
       <Grid item xs={12}>
-        <DataTable
-          count={devices.count}
-          start={devices.start}
-          limit={devices.limit}
-          rows={devices.results}
-          columns={columns}
-          onPaginationChange={(newPagination) => {
-            setPagination(newPagination);
-          }}
-          pageSizeOptions={[5, 10, 25, 50, 100]}
-        />
+        {matches ? (
+          <DataTable
+            count={devices.count}
+            start={devices.start}
+            limit={devices.limit}
+            rows={devices.results}
+            columns={columns}
+            onPaginationChange={(newPagination) => {
+              setPagination(newPagination);
+            }}
+            pageSizeOptions={[5, 10, 25, 50, 100]}
+          />
+        ) : (
+          <Stack gap={4}>
+            <DevicesCardsList rows={devices?.results || []} />
+            {devices.count ? (
+              <Pagination
+                size="large"
+                sx={{ mb: 4 }}
+                count={Math.ceil(devices.count / pagination.pageSize)}
+                page={pagination.page}
+                onChange={(
+                  event: React.ChangeEvent<unknown>,
+                  value: number
+                ) => {
+                  setPagination({ ...pagination, page: value });
+                }}
+              />
+            ) : (
+              false
+            )}
+          </Stack>
+        )}
       </Grid>
 
       <ModalWrapper

@@ -120,9 +120,14 @@ export function ContractConcern({ id = null }: ContractsConcernProps) {
         item
         xs={12}
         lg={9}
-        sx={{ display: "flex", alignItems: "center", gap: 4 }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          flexWrap: "wrap-reverse",
+        }}
       >
-        <Typography variant="h4" component="h2">
+        <Typography variant="h6" component="h2" noWrap>
           {contract?.ref}
         </Typography>
 

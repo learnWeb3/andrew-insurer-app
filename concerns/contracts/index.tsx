@@ -1,4 +1,10 @@
-import { Grid, Typography } from "@mui/material";
+import {
+  Grid,
+  Pagination,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import DataTable from "../../components/Datatable";
 import { SearchBar } from "../../components/SearchBar";
@@ -15,6 +21,7 @@ import { ContractStatusFilters } from "./ContractStatusFilters";
 import { usePagination } from "../../hooks/usePagination";
 import { useDebounce } from "../../hooks/useDebounce";
 import { useRouter } from "next/router";
+import { ContractsCardsList } from "./ContractsCardsList";
 
 export interface ContractsConcernProps {
   searchFilters: {
@@ -30,7 +37,7 @@ export function ContractsConcern({
   const router = useRouter();
   const columns: GridColDef[] = [
     {
-      field: "ref",
+      field: "reference",
       headerName: "Ref",
       flex: 1,
       renderCell: RenderCellLink,
@@ -64,13 +71,13 @@ export function ContractsConcern({
   const [contracts, setContracts] = useState<
     PaginatedResults<{
       id: string;
-      ref: {
+      reference: {
         label: string;
         href: string;
       };
       status: ContractStatus;
       vehicle: {
-        label: number;
+        label: string;
         href: string;
       };
       createdAt: string;
@@ -101,7 +108,7 @@ export function ContractsConcern({
           ...data,
           results: data.results.map((contract: Contract) => ({
             id: contract._id,
-            ref: {
+            reference: {
               label: contract.ref,
               href: `/contracts/${contract._id}`,
             },
@@ -116,6 +123,8 @@ export function ContractsConcern({
       });
     }
   }, [accessToken, searchFilters?.status, pagination, debouncedSearchValue]);
+
+  const matches = useMediaQuery("(min-width:600px)");
 
   return (
     <Grid container spacing={2}>
@@ -143,17 +152,39 @@ export function ContractsConcern({
         />
       </Grid>
       <Grid item xs={12}>
-        <DataTable
-          count={contracts.count}
-          start={contracts.start}
-          limit={contracts.limit}
-          rows={contracts.results}
-          columns={columns}
-          onPaginationChange={(newPagination) => {
-            setPagination(newPagination);
-          }}
-          pageSizeOptions={[5, 10, 25, 50, 100]}
-        />
+        {matches ? (
+          <DataTable
+            count={contracts.count}
+            start={contracts.start}
+            limit={contracts.limit}
+            rows={contracts.results}
+            columns={columns}
+            onPaginationChange={(newPagination) => {
+              setPagination(newPagination);
+            }}
+            pageSizeOptions={[5, 10, 25, 50, 100]}
+          />
+        ) : (
+          <Stack gap={4}>
+            <ContractsCardsList rows={contracts?.results || []} />
+            {contracts.count ? (
+              <Pagination
+                size="large"
+                sx={{ mb: 4 }}
+                count={Math.ceil(contracts.count / pagination.pageSize)}
+                page={pagination.page}
+                onChange={(
+                  event: React.ChangeEvent<unknown>,
+                  value: number
+                ) => {
+                  setPagination({ ...pagination, page: value });
+                }}
+              />
+            ) : (
+              false
+            )}
+          </Stack>
+        )}
       </Grid>
     </Grid>
   );

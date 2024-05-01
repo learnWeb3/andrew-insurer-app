@@ -1,5 +1,5 @@
 import Container from "@mui/material/Container";
-import { UsersConcern } from "../../concerns/users";
+import { UsersConcern } from "../../concerns/users/index";
 import { OidcSecure } from "@axa-fr/react-oidc";
 import { OidcRoleGuard } from "../../components/OidcRoleGuard";
 import { AvailableRoles } from "../../lib/available-roles.enum";

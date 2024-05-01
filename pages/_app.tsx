@@ -17,6 +17,7 @@ import { store } from "../store/store";
 import { ComponentType, ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
 import { ToastContainer } from "react-toastify";
+import "../styles/main.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
