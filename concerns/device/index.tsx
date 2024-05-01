@@ -21,7 +21,12 @@ export function DeviceConcern({ id = null }: DeviceConcernProps) {
 
   useEffect(() => {
     if (id && accessToken) {
-      findDevice(id, accessToken).then((device: Device) => setDevice(device));
+      findDevice(id, accessToken).then((device: Device) =>
+        setDevice({
+          ...device,
+          vehicle: { devices: [device], ...device.vehicle },
+        })
+      );
     }
   }, [id, accessToken]);
 
@@ -54,7 +59,12 @@ export function DeviceConcern({ id = null }: DeviceConcernProps) {
         item
         xs={12}
         lg={9}
-        sx={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap-reverse" }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
+          flexWrap: "wrap-reverse",
+        }}
       >
         <Typography variant="h6" component="h2" noWrap>
           {device?.serialNumber}

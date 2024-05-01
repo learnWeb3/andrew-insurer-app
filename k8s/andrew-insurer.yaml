@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
         - name: andrew-insurer
-          image: antoineleguillou/andrew-insurer:2024-04-30.11
+          image: antoineleguillou/andrew-insurer:2024-05-01.13
           imagePullPolicy: Always
           resources:
             limits:

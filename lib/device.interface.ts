@@ -45,6 +45,7 @@ export interface Device {
     contractSubscriptionKm: number;
     createdAt: string;
     updatedAt: string;
+    devices?: Device[];
   };
   serialNumber: string;
   pairingDate: string;
