@@ -19,6 +19,7 @@ export function computeMissingVehiclesDocumentErrors(
 export function computeMissingContractsDocumentErrors(
   data: UpdateSubscriptionApplicationData
 ) {
+  // console.log(JSON.stringify(data, null, 4))
   const errors: string[] = [];
   if (!data?.contract?.contractDocURL) {
     errors.push(`Missing signed contract document`);

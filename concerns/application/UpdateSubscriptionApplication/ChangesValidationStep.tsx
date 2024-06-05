@@ -2,7 +2,6 @@ import { Button, Grid } from "@mui/material";
 import { UpdateSubscriptionApplicationData } from ".";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { ApplicationStatus } from "../../../lib/application-status.enum";
-import { useEffect, useState } from "react";
 import { useMissingDocumentsErrors } from "./MissingDocumentErrors/useMissingDocumentsErrors";
 import DoneIcon from "@mui/icons-material/Done";
 import DoNotDisturbIcon from "@mui/icons-material/DoNotDisturb";
@@ -10,14 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 
 export interface ChangesValidationStepProps {
   data: UpdateSubscriptionApplicationData;
-  errors: { [field: string]: string[] };
-  setErrors: (
-    errors:
-      | { [field: string]: string[] }
-      | ((errors: { [field: string]: string[] }) => {
-          [field: string]: string[];
-        })
-  ) => void;
+  errors: string[];
   setData: (newData: any) => void;
   accept: (data: UpdateSubscriptionApplicationData) => Promise<void>;
   save: (data: UpdateSubscriptionApplicationData) => Promise<void>;
@@ -34,17 +26,9 @@ export function ChangesValidationStep({
   review = async (data: UpdateSubscriptionApplicationData) => {},
   reject = async (data: UpdateSubscriptionApplicationData) => {},
   ammend = async (data: UpdateSubscriptionApplicationData) => {},
-  errors = {},
-  setErrors = (errors = {}) => {},
+  errors = [],
   readOnly = false,
 }: ChangesValidationStepProps) {
-  const [globalErrors, setGlobalErrors] = useState<string[]>([]);
-  useEffect(() => {
-    Object.values(errors).reduce((errors, globalList) => {
-      globalList.push(...errors);
-      return globalList;
-    }, []);
-  }, [errors]);
   const {
     missingIdentityDocumentsErrors,
     missingContractsDocumentsErrors,
@@ -76,7 +60,7 @@ export function ChangesValidationStep({
             }}
             variant="contained"
             disabled={
-              globalErrors?.length ||
+              errors?.length ||
               missingContractsDocumentsErrors?.length ||
               missingIdentityDocumentsErrors?.length ||
               missingVehiclesDocumentsErrors?.length ||
@@ -88,7 +72,9 @@ export function ChangesValidationStep({
           >
             Ask for review
           </Button>
-        ): false}
+        ) : (
+          false
+        )}
 
         {data?.status === ApplicationStatus.REVIEWING ? (
           <Button
@@ -96,7 +82,7 @@ export function ChangesValidationStep({
             onClick={() => accept(data)}
             variant="contained"
             disabled={
-              globalErrors?.length ||
+              errors?.length ||
               missingContractsDocumentsErrors?.length ||
               missingIdentityDocumentsErrors?.length ||
               missingVehiclesDocumentsErrors?.length ||
@@ -108,7 +94,9 @@ export function ChangesValidationStep({
           >
             Accept application
           </Button>
-        ): false}
+        ) : (
+          false
+        )}
 
         {data?.status === ApplicationStatus.REVIEWING ? (
           <Button
@@ -120,7 +108,9 @@ export function ChangesValidationStep({
           >
             Reject application
           </Button>
-        ): false}
+        ) : (
+          false
+        )}
 
         {data?.status === ApplicationStatus.REVIEWING ? (
           <Button
@@ -132,7 +122,9 @@ export function ChangesValidationStep({
           >
             Ask to ammend application
           </Button>
-        ): false}
+        ) : (
+          false
+        )}
       </Grid>
     </Grid>
   ) : null;

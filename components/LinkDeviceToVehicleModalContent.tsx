@@ -60,6 +60,10 @@ export function LinkDeviceToVehicleModalContent({
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
 
   useEffect(() => {
+    console.log(vehicleId, contractId, customerId);
+  }, [vehicleId, contractId, customerId]);
+
+  useEffect(() => {
     if (accessToken && pagination) {
       listDevices(
         accessToken,

@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Breadcrumb from "../../components/Breadcrumb";
 import { useEffect, useState } from "react";
 import { ApplicationStatusDropdown } from "./ApplicationSatusDropdown";
@@ -95,16 +95,18 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
     }
   }, [id, accessToken]);
 
-  const [errors, setErrors] = useState<{ [field: string]: string[] }>({
-    firstName: [],
-    lastName: [],
-    email: [],
-    phoneNumber: [],
-    address: [],
-    city: [],
-    postCode: [],
-    country: [],
-  });
+  const [firstNameErrors, setFirstNameErrors] = useState<string[]>([]);
+  const [lastNameErrors, setLastNameErrors] = useState<string[]>([]);
+  const [emailErrors, setEmailErrors] = useState<string[]>([]);
+  const [phoneNumberErrors, setPhoneNumberErrors] = useState<string[]>([]);
+
+  const [addressErrors, setAddressErrors] = useState<string[]>([]);
+  const [cityErrors, setCityErrors] = useState<string[]>([]);
+  const [postCodeErrors, setPostCodeErrors] = useState<string[]>([]);
+  const [countryErrors, setCountryErrors] = useState<string[]>([]);
+  const [vehiclesErrors, setVehiclesErrors] = useState<{
+    [field: string]: string[];
+  }>({});
 
   const [finalizeComment, setFinalizeComment] = useState<string>("");
   const [confirmModalProps, setConfirmModalProps] = useState({
@@ -121,6 +123,10 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
       toggled: false,
     });
   }
+
+  useEffect(() => {
+    console.log("===> VEHICLES", application);
+  }, [application]);
 
   return (
     <Grid container spacing={4} mb={4}>
@@ -194,8 +200,22 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
               }}
               data={application}
               setData={setApplication}
-              errors={errors}
-              setErrors={setErrors}
+              firstNameErrors={firstNameErrors}
+              setFirstNameErrors={setFirstNameErrors}
+              lastNameErrors={lastNameErrors}
+              setLastNameErrors={setLastNameErrors}
+              emailErrors={emailErrors}
+              setEmailErrors={setEmailErrors}
+              phoneNumberErrors={phoneNumberErrors}
+              setPhoneNumberErrors={setPhoneNumberErrors}
+              addressErrors={addressErrors}
+              setAddressErrors={setAddressErrors}
+              cityErrors={cityErrors}
+              setCityErrors={setCityErrors}
+              postCodeErrors={postCodeErrors}
+              setPostCodeErrors={setPostCodeErrors}
+              countryErrors={countryErrors}
+              setCountryErrors={setCountryErrors}
               readOnly={
                 application?.status === ApplicationStatus.PENDING ||
                 application?.status === ApplicationStatus.REVIEWING ||
@@ -213,8 +233,6 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
             <InsuranceProductChoiceStep
               data={application}
               setData={setApplication}
-              errors={errors}
-              setErrors={setErrors}
               save={async (application) => {
                 try {
                   await updateSubscriptionApplication(
@@ -247,8 +265,8 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
             <VehiclesInformationsStep
               data={application}
               setData={setApplication}
-              errors={errors}
-              setErrors={setErrors}
+              errors={vehiclesErrors}
+              setErrors={setVehiclesErrors}
               save={async (application) => {
                 try {
                   await updateSubscriptionApplication(
@@ -280,8 +298,6 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
 
           <Grid item xs={12}>
             <ContractAndTermsOfSalesStep
-              errors={errors}
-              setErrors={setErrors as any}
               data={application}
               setData={setApplication}
               save={async (application) => {
@@ -323,7 +339,18 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
           application?.status !== ApplicationStatus.PAYMENT_CONFIRMED ? (
             <Grid item xs={12}>
               <MissingInsuranceProductErrors data={application} />
-              <ValidationErrors errors={errors} />
+              <ValidationErrors
+                errors={[
+                  ...firstNameErrors,
+                  ...lastNameErrors,
+                  ...emailErrors,
+                  ...phoneNumberErrors,
+                  ...addressErrors,
+                  ...cityErrors,
+                  ...postCodeErrors,
+                  ...countryErrors,
+                ]}
+              />
               <MissingVehiclesErrors data={application} />
               <MissingDocumentErrors data={application} />
             </Grid>
@@ -333,8 +360,16 @@ export function ApplicationConcern({ id = null }: ApplicationConcernProps) {
 
           <Grid item xs={12}>
             <ChangesValidationStep
-              errors={errors}
-              setErrors={setErrors}
+              errors={[
+                ...firstNameErrors,
+                ...lastNameErrors,
+                ...emailErrors,
+                ...phoneNumberErrors,
+                ...addressErrors,
+                ...cityErrors,
+                ...postCodeErrors,
+                ...countryErrors,
+              ]}
               data={application}
               setData={setApplication}
               save={async (application) => {

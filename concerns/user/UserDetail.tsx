@@ -332,15 +332,7 @@ export function UserDetail({
             <MapsAutocompleteTextField
               label="Start typing your address in here..."
               id="address"
-              validate={validateRequired}
               value={user?.billingInformations?.address}
-              errors={(errors.address as any) || []}
-              setErrors={(_errors) =>
-                setErrors((errors) => ({
-                  ...errors,
-                  address: _errors,
-                }))
-              }
               handleInput={(value) => {
                 setUser({
                   ...user,
@@ -357,7 +349,9 @@ export function UserDetail({
               }}
             />
           </Grid>
-        ): false}
+        ) : (
+          false
+        )}
         <Grid item xs={12}>
           <TextField
             label="Address"

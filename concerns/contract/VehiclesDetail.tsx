@@ -30,6 +30,7 @@ export function VehiclesDetail({
         vehicles.results.map((vehicle, index) => (
           <Grid container gap={2} item xs={12} key={index}>
             <VehicleInformations
+              linkDeviceModal={true}
               vehicle={vehicle}
               setVehicle={(vehicle) => {
                 const updatedVehicles = [...vehicles.results];

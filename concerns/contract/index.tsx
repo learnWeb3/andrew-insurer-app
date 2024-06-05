@@ -62,6 +62,7 @@ export function ContractConcern({ id = null }: ContractsConcernProps) {
     limit: 10,
     start: 0,
   });
+
   useEffect(() => {
     if (id && accessToken) {
       findContract(id, accessToken).then((contract: Contract) =>

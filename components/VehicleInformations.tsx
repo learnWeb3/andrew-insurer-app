@@ -57,6 +57,7 @@ export interface VehicleInformationsProps {
     originalInServiceDate: string[];
     registrationNumber: string[];
   }) => void;
+  linkDeviceModal?: boolean;
 }
 
 export function VehicleInformations({
@@ -73,6 +74,7 @@ export function VehicleInformations({
     originalInServiceDate: string[];
     registrationNumber: string[];
   }) => {},
+  linkDeviceModal = false,
 }: VehicleInformationsProps) {
   const [errors, setErrors] = useState<{
     vin: string[];
@@ -280,7 +282,7 @@ export function VehicleInformations({
             readOnly={readOnly}
           />
 
-          {!vehicle?.devices?.length ? (
+          {!vehicle?.devices?.length && linkDeviceModal ? (
             <Box
               display={"flex"}
               flexDirection={"column"}

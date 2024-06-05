@@ -17,40 +17,42 @@ export function AlertStatus({ status, statusHistory = [] }: AlertStatusProps) {
     <>
       {status === ApplicationStatus.PENDING ? (
         <Alert icon={<CheckCircleOutline fontSize="inherit" />} severity="info">
-          Customer has not yet validated it's subscription application
+          Please fill out the form below, when ready, submit your application
+          for review, this process can take up to 2-5 business days
         </Alert>
-      ): false}
+      ) : false}
       {status === ApplicationStatus.REVIEWING ? (
         <Alert icon={<CheckCircleOutline fontSize="inherit" />} severity="info">
-          Customer has validated his subscription application please verify the
-          informations, you can then accept, reject or ask to ammend the
-          application.
+          Our teams are reviewing your application, it can takes up to 2-5
+          business days.
         </Alert>
-      ): false}
+      ) : false}
       {status === ApplicationStatus.PAYMENT_PENDING ? (
         <Alert
           icon={<CheckCircleOutline fontSize="inherit" />}
           severity="success"
         >
-          We are awaiting the payment confirmation on the customer side.
-          Customer must click on the payment link and proceed top checkout.
+          We are awaiting the confirmation of your payment, please proceed to
+          checkout using the link below
         </Alert>
-      ): false}
+      ) : false}
       {status === ApplicationStatus.PAYMENT_CONFIRMED ? (
         <Alert
           icon={<CheckCircleOutline fontSize="inherit" />}
           severity="success"
         >
-          Customer payment has been confirmed.
+          Congrats, You payment has been confirmed, welcome to the Andrew family
+          !
         </Alert>
-      ): false}
+      ) : false}
       {status === ApplicationStatus.TO_AMMEND ? (
         <Alert
           icon={<CheckCircleOutline fontSize="inherit" />}
           severity="warning"
         >
-          You have asked the customer to ammend his subscription application,
-          please wait until he ask for a new application review <br />
+          It seems there is an issue with you application please review and
+          proceed to necessary changes before re-submitting it for review
+          <br />
           <strong>
             Reason:{" "}
             {statusHistory?.sort(
@@ -60,13 +62,15 @@ export function AlertStatus({ status, statusHistory = [] }: AlertStatusProps) {
             )?.[0]?.comment || ""}
           </strong>
         </Alert>
-      ): false}
+      ) : false}
       {status === ApplicationStatus.REJECTED ? (
         <Alert
           icon={<CheckCircleOutline fontSize="inherit" />}
           severity="error"
         >
-          We have rejected this application <br />
+          We are sorry, but it seems you are not elligible for our insurance
+          product
+          <br />
           <strong>
             Reason:{" "}
             {statusHistory?.sort(
@@ -76,7 +80,7 @@ export function AlertStatus({ status, statusHistory = [] }: AlertStatusProps) {
             )?.[0]?.comment || ""}
           </strong>
         </Alert>
-      ): false}
+      ) : false}
     </>
   );
 }

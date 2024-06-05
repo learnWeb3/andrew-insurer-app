@@ -1,4 +1,4 @@
-import { useState, useEffect, Key } from "react";
+import { useState, useEffect } from "react";
 import { UpdateSubscriptionApplicationData } from ".";
 import { useOidcAccessToken } from "@axa-fr/react-oidc";
 import { listProducts } from "../../../services/ecommerce-api.service";
@@ -14,14 +14,6 @@ import { Paper } from "@mui/material";
 export interface InsuranceProductChoiceStepProps {
   data: UpdateSubscriptionApplicationData;
   setData: (newData: any) => void;
-  errors: { [field: string]: string[] };
-  setErrors: (
-    errors:
-      | { [field: string]: string[] }
-      | ((errors: { [field: string]: string[] }) => {
-          [field: string]: string[];
-        })
-  ) => void;
   save: (data: UpdateSubscriptionApplicationData) => Promise<void>;
   readOnly?: boolean;
 }
@@ -90,7 +82,9 @@ export default function InsuranceProductCard({
             >
               {selected ? "UNSELECT" : "SELECT"}
             </Button>
-          ): false}
+          ) : (
+            false
+          )}
         </CardActions>
       </Paper>
     </Paper>
@@ -99,8 +93,6 @@ export default function InsuranceProductCard({
 export function InsuranceProductChoiceStep({
   data,
   setData = (newData: UpdateSubscriptionApplicationData) => {},
-  errors = {},
-  setErrors = (errors = {}) => {},
   save = async (data: UpdateSubscriptionApplicationData) => {},
   readOnly = false,
 }: InsuranceProductChoiceStepProps) {
@@ -132,17 +124,15 @@ export function InsuranceProductChoiceStep({
     });
   }
 
-  return insuranceProducts.results.map(
-    (insuranceProduct: { _id: string; name: string; price: number }) => (
-      <InsuranceProductCard
-        key={insuranceProduct._id}
-        id={insuranceProduct._id}
-        name={insuranceProduct.name}
-        price={insuranceProduct.price}
-        onSelect={handleSelect}
-        selected={data?.contract?.ecommerceProduct === insuranceProduct._id}
-        readOnly={readOnly}
-      />
-    )
-  );
+  return insuranceProducts.results.map((insuranceProduct) => (
+    <InsuranceProductCard
+      key={insuranceProduct._id}
+      id={insuranceProduct._id}
+      name={insuranceProduct.name}
+      price={insuranceProduct.price}
+      onSelect={handleSelect}
+      selected={data?.contract?.ecommerceProduct === insuranceProduct._id}
+      readOnly={readOnly}
+    />
+  ));
 }

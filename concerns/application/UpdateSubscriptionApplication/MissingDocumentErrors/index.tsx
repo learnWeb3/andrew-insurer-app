@@ -1,6 +1,12 @@
 import { Alert, AlertTitle } from "@mui/material";
+import { useEffect, useState } from "react";
 import { UpdateSubscriptionApplicationData } from "..";
-import { useMissingDocumentsErrors } from "./useMissingDocumentsErrors";
+import {
+  computeMissingContractsDocumentErrors,
+  computeMissingIdentityDocumentErrors,
+  computeMissingVehiclesDocumentErrors,
+  useMissingDocumentsErrors,
+} from "./useMissingDocumentsErrors";
 
 export interface MissingDocumentErrorsProps {
   data: UpdateSubscriptionApplicationData;
@@ -24,7 +30,7 @@ export function MissingDocumentErrors({ data }: MissingDocumentErrorsProps) {
             ))}
           </ul>
         </Alert>
-      ): false}
+      ) : false}
       {missingVehiclesDocumentsErrors?.length ? (
         <Alert severity="error">
           <AlertTitle>Missing vehicles documents</AlertTitle>
@@ -34,7 +40,7 @@ export function MissingDocumentErrors({ data }: MissingDocumentErrorsProps) {
             ))}
           </ul>
         </Alert>
-      ): false}
+      ) : false}
       {missingContractsDocumentsErrors?.length ? (
         <Alert severity="error">
           <AlertTitle>Missing contract documents</AlertTitle>
@@ -44,7 +50,7 @@ export function MissingDocumentErrors({ data }: MissingDocumentErrorsProps) {
             ))}
           </ul>
         </Alert>
-      ): false}
+      ) : false}
     </>
   );
 }
